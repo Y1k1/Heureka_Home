@@ -1,112 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Background</title>
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            height: 100%;
+            background-color: black;
         }
 
-        video {
+        #horror-animation {
+            color: red;
+            text-align: center;
+            padding: 50px;
+            font-size: 24px;
+            animation: flicker 3s infinite;
             position: absolute;
+            width: 100%;
+            z-index: 1;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                opacity: 0;
+            }
+        }
+
+        #video-container {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: -1;
+            overflow: hidden;
+            z-index: 0;
+            display: none; /* Initially hidden */
         }
 
-        .content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            color: #fff;
-            font-size: 2em;
-            padding: 20px;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
- </head>
-  <body>
-    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player" style="display: none;"></div>
-    
-    <!-- Add Start and Stop buttons -->
-    <button onclick="startVideo()">Start</button>
-    <button onclick="stopVideo()">Stop</button>
-
+</head>
+<body>
     <script>
-      var player;
-      var seeking = false; // Flag to indicate if a seek is in progress
-      
-      // 2. This code loads the IFrame Player API code asynchronously.
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        document.addEventListener('DOMContentLoaded', function() {
+            var horrorText = document.getElementById('horror-animation');
+            var videoContainer = document.getElementById('video-container');
+            var video = document.getElementById('horror-video');
+            var isVideoPlayed = false; // Flag to ensure video plays only once
 
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '0', // Set height to your desired size
-          width: '0', // Set width to your desired size
-          videoId: 'jfKfPfyJRdk', // Replace with your video ID
-          playerVars: {
-            autoplay: 0, // Disable autoplay
-            controls: 0, // Disable default video controls
-          },
-          events: {
-            'onReady': onPlayerReady,
-          }
+            document.body.addEventListener('click', function() {
+                if (!isVideoPlayed) {
+                    videoContainer.style.display = 'block'; // Show the video
+                    video.play(); // Play the video
+
+                    setTimeout(function() {
+                        horrorText.innerHTML = '日頃のお前'; // Change the text after 1 second
+                        horrorText.style.display = 'block'; // Show the text
+                    }, 1000);
+
+                    isVideoPlayed = true; // Set the flag to true
+                }
+            });
         });
-      }
-
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        // Player is ready; no need to do anything here
-        startVideo(); // Start the video immediately when it's ready
-      }
-
-      // Function to start the video, seek to a specific time, and play
-      function startVideo() {
-        if (player) {
-          document.getElementById('player').style.display = 'block'; // Show the video screen
-          if (!seeking) {
-            seeking = true; // Set seeking flag to prevent multiple seeks
-            player.seekTo(13 * 3600, true); // Force seek to 13 hours
-            player.playVideo(); // Start playing
-            seeking = false; // Reset seeking flag
-          } else {
-            // If seeking is already in progress, just play the video
-            player.playVideo();
-          }
-        }
-      }
-
-      // Function to stop the video
-      function stopVideo() {
-        if (player) {
-          player.pauseVideo(); // Pause the video
-          document.getElementById('player').style.display = 'none'; // Hide the video screen
-          seeking = false; // Reset seeking flag after stopping
-        }
-      }
     </script>
-    
-    <video autoplay loop muted>
-      <source src="background.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  
-  
-      <div class="content">
-          <h1></h1>
-          <p></p>
-      </div>
-  </body>
+
+    <div id="video-container">
+        <video id="horror-video" controls>
+            <source src="movie1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div id="horror-animation">
+        <p>Something spooky this way comes...</p>
+    </div>
+</body>
 </html>
