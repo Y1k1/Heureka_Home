@@ -1,1 +1,169 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integrated View</title>
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+    body::after {
+        content: "";
+        background: url('https://drive.google.com/uc?id=1L2O9pHqAWb24bBWbTLJ_uIfHSE2mgfQ0') no-repeat center center;
+        background-size: cover;
+        opacity: 0.1; /* 10% visible */
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;   
+    }
+    .container {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+    }
+    .section {
+        max-width: 100%; /* Ensure the section doesn't exceed the viewport width */
+        padding: 10px;
+        box-sizing: border-box;
+        overflow-x: hidden; /* Prevent horizontal scroll within sections if needed */
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stock News Ticker</title>
+<style>
+@keyframes tickerMove {
+    0% { transform: translateX(100%); opacity: 1; }
+    50% { transform: translateX(0); opacity: 1; }
+    60% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 0; }
+}
+
+#ticker-wrap {
+    overflow: hidden;
+    position: relative;
+    background: #ddd;
+    padding: 10px;
+    white-space: nowrap;
+}
+.ticker-news {
+    position: absolute;
+    white-space: nowrap;
+    animation-name: tickerMove;
+    animation-fill-mode: forwards;
+    display: none; /* Start with the element not displayed */
+}
+.ticker-news a {
+    text-decoration: none;
+    color: #000;
+}
+</style>
+<script>
+window.addEventListener('DOMContentLoaded', (event) => {
+    let newsItems = document.querySelectorAll('.ticker-news');
+    let currentIndex = 0;
+
+    function scheduleNextNews() {
+        if (currentIndex > 0) {
+            let prevIndex = currentIndex - 1;
+            newsItems[prevIndex].style.display = 'none'; // Hide the previous news item
+        }
+
+        let newsItem = newsItems[currentIndex];
+        newsItem.style.display = 'block'; // Show the current news item
+        newsItem.style.animationDuration = '9s'; // Total duration for the whole animation
+
+        // Set the timeout for the duration of the animation
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % newsItems.length;
+            scheduleNextNews();
+        }, 10000); // 10 seconds for the entire animation sequence
+    }
+
+    scheduleNextNews(); // Start the news ticker
+});
+</script>
+
+
+</head>
+<body>
+<!-- Add Previous and Next buttons -->
+
+<div id="ticker-wrap">
+    <!-- News items will be inserted here -->
+</div>
+</body>
+</html>
+<div class="ticker-news" style="display: none;"><a href="https://kabutan.jp/news/marketnews/?b=n202311221082" target="_blank">日経平均　＜日足＞　「株探」多機能チャートよりきょう（２２日）の東京株式市場は、日経平均株価が前営業日比９７円高の３万３４５１円と３日ぶり反発。</a></div>
+<div class="ticker-news" style="display: none;"><a href="https://kabutan.jp/news/marketnews/?b=n202311220910" target="_blank">ＪＥＴ　＜日足＞　「株探」多機能チャートより■ジェイ・イー・ティ <6228> 　6,690円+840円 (+14.4％)　　本日終値ジェイ・イー・ティ<6228>の上げ足が止まらない。</a></div>
+<div class="ticker-news" style="display: none;"><a href="https://kabutan.jp/news/marketnews/?b=n202311211177" target="_blank">上期決算発表シーズンでは脱コロナや円安の追い風などを背景に、通期業績見通しを上方修正する企業が続出した。</a></div>
+<div class="ticker-news" style="display: none;"><a href="https://kabutan.jp/news/marketnews/?b=n202311220915" target="_blank">西松屋チェ　＜日足＞　「株探」多機能チャートより■西松屋チェーン <7545> 　2,011円+25円 (+1.3％)　　本日終値西松屋チェーン<7545>は４日続伸。</a></div>
+</div></body>
+</html>
+        </div>
+        <div class="section">
+            <div style="display:flex; justify-content:space-around; align-items:flex-start; min-height:500px;">
+<div style="display:flex; flex-direction:column; justify-content:flex-start; align-items:center; flex: 1;">
+<div style='width:100%;'>
+<h2>Top 5</h2>
+Number 6228 appears 3 times (no data found)<br>
+Number 2962 appears 3 times (no data found)<br>
+<a href="https://walletinvestor.com//tse-stock-forecast/5285-stock-prediction">Yamax Corp</a> appears 3 times<br>
+<a href="https://walletinvestor.com//tse-stock-forecast/3660-stock-prediction">Istyle Inc</a> appears 2 times<br>
+<a href="https://walletinvestor.com//tse-stock-forecast/5741-stock-prediction">Uacj Corp</a> appears 2 times<br>
+</div>
+
+<div style='width:100%; padding: 10px; box-sizing: border-box;'>
+  <img src="https://drive.google.com/uc?id=1Qf6sXyOKVWn0UoPynC459ZUlPjI_3p2Q" style="max-width:100%;height:auto;">
+</div>
+</div>
+
+<div style='flex: 2; padding: 10px; box-sizing: border-box; height: 800px;'>  <!-- Increased height -->
+  <!-- TradingView Widget BEGIN -->
+  <div class="tradingview-widget-container" style="height: 80%; width:100%;">  <!-- Adjust height as needed -->
+    <div id="tradingview_396f4" style="height:90%; width:90%;"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+    new TradingView.widget(
+      {
+        "autosize": true,
+        "symbol": "SPREADEX:NIKKEI",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "light",
+        "style": "1",
+        "locale": "ja",
+        "enable_publishing": false,
+        "allow_symbol_change": true,
+        "container_id": "tradingview_396f4"
+      }
+    );
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+</div>
+</div>
+<h2>Text Content</h2>
+<p>そうしたなか、半導体関連株はレーザーテック<6920>、東京エレクトロン<8035>をツートップに怒涛の行進となってきた。当欄で取り上げた銘柄ではＡＩメカテック<6227>、ミナトホールディングス<6862>、ジェイ・イー・ティ<6228>などが先駆して人気化し、直近では今日はひと押し入れているもののオキサイド<6521>が急動意で大底圏からのテイクオフを果たし、前日に穴株として取り上げたテクニスコ<2962>はストップ高に買われる人気となった。半導体のファブレスメーカーであるザインエレクトロニクス<6769>は「理外の理」の典型。このほかでは、大阪有機化学工業<4187>、ＲＳ　Ｔｅｃｈｎｏｌｏｇｉｅｓ<3445>、テラプローブ<6627>などに着目してみたい。ＪＥＴ　＜日足＞　「株探」多機能チャートより■ジェイ・イー・ティ <6228> 　6,690円+840円 (+14.4％)　　本日終値ジェイ・イー・ティ<6228>の上げ足が止まらない。■アイスタイル <3660> 　521円+26円 (+5.3％)　　本日終値　 東証プライム 上昇率10位アイスタイル<3660>は急伸。■ＵＡＣＪ <5741> 　3,265円+120円 (+3.8％)　　本日終値ＵＡＣＪ<5741>が３日ぶりに反発。■クレハ <4023> 　8,560円+280円 (+3.4％)　　本日終値クレハ<4023>は続伸。■ストライク <6196> 　3,970円+120円 (+3.1％)　　本日終値ストライク<6196>が６連騰。■日本板硝子 <5202> 　645円+19円 (+3.0％)　　本日終値日本板硝子<5202>が４日ぶり反発。■サッポロＨＤ <2501> 　5,803円+156円 (+2.8％)　　本日終値サッポロホールディングス<2501>が堅調。■三井海洋開発 <6269> 　2,024円+44円 (+2.2％)　　本日終値三井海洋開発<6269>がしっかり。■長瀬産業 <8012> 　2,338円+50円 (+2.2％)　　本日終値長瀬産業<8012>が続伸。■双日 <2768> 　3,073円+43円 (+1.4％)　　本日終値双日<2768>が３日ぶりに反発した。●フタバはトヨタの新車生産回復で業績急改善フタバ産業 <7241> [東証Ｐ]はマフラーなど自動車用プレス部品のトップメーカー。筆頭株主で主要取引先でもあるトヨタ自動車 <7203> [東証Ｐ]の生産回復を背景に足もとの業績は絶好調だ。●広済堂ＨＤは稼ぎ柱の葬祭部門が高成長へ広済堂ホールディングス <7868> [東証Ｐ]は印刷、葬祭、人材を3本柱とするが、利益の大半は東京都内に6カ所の葬儀場併設火葬場を運営する葬祭部門が稼ぎ出している。●日ギアは期初の減益予想から最高益見通しへ大幅増額修正日本ギア工業 <6356> [東証Ｓ]はバルブアクチュエータ（バルブ開閉装置）、ミキサー、スクリュージャッキなどを展開する歯車製品の老舗メーカー。●ヤマックスは業績、株価ともに大復活もまだ割安ヤマックス <5285> [東証Ｓ]は熊本県に本社を構える九州最大の土木用・建築用コンクリート二次製品メーカー。●富士通系SIの大興電子は32期ぶり最高益奪還へ大興電子通信 <8023> [東証Ｓ]は富士通系のシステムインテグレータ。西松屋チェ　＜日足＞　「株探」多機能チャートより■西松屋チェーン <7545> 　2,011円+25円 (+1.3％)　　本日終値西松屋チェーン<7545>は４日続伸。■レゾナック <4004> 　2,672.5円+20円 (+0.8％)　　本日終値レゾナック・ホールディングス<4004>が底堅い。■コニシ <4956> 　2,475円+15円 (+0.6％)　　本日終値コニシ<4956>が反発。■ニップン <2001> 　2,231円+13円 (+0.6％)　　本日終値ニップン<2001>が続伸した。■アドバンテスト <6857> 　4,570円-207円 (-4.3％)　　本日終値　 東証プライム 下落率8位アドバンテスト<6857>は反落。この流れを引き継ぐ形で、東京市場でも生成ＡＩ関連に位置付けられるアドテストやディスコ<6146>をはじめ半導体製造装置関連の主力銘柄に売りが先行している。■Ｊパワー <9513> 　2,276円-4円 (-0.2％)　　本日終値Ｊパワー<9513>は小幅に５日続落。■テクニスコ <2962> 　723円+100円 (+16.1％)ストップ高本日終値テクニスコ<2962>が急騰。■ヤマックス <5285> 　1,020円+115円 (+12.7％)　　本日終値ヤマックス<5285>は上値指向継続。■カイオム <4583> 　147円+12円 (+8.9％)　　本日終値カイオム・バイオサイエンス<4583>は３日続伸、商い増勢のなか株価水準を切り上げ底値離脱の動きを明示している。■高見サイ <6424> 　1,097円+89円 (+8.8％)　　本日終値高見沢サイバネティックス<6424>は大幅続伸した。２１日の取引終了後、パナソニック　ホールディングス<6752>傘下のパナソニックコネクトと開発したウォークスルー型の顔認証改札機について、大阪市高速電気軌道（大阪メトロ）での設置作業が開始されると発表。</p>
+
+        </div>
+    </div>
+</body>
+</html>
