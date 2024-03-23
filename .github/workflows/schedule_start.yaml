@@ -2,7 +2,7 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '53 6 * * *'  # Runs at 21:50 UTC, which is 6:50 AM JST of the following day
+    - cron: '0 7 * * *'  # Runs at 07:00 UTC, which is 16:00 JST
   workflow_dispatch:
 
 jobs:
@@ -22,4 +22,4 @@ jobs:
       run: pip install requests
 
     - name: Run Python script
-      run: python start_run.py
+      run: python start_run.py do this work
