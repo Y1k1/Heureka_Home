@@ -8,11 +8,11 @@ on:
       hour:
         description: 'Hour (0-23, in UTC)'
         required: true
-        default: '8'
+        default: '21'
       minute:
         description: 'Minute (0-59)'
         required: true
-        default: '42'
+        default: '30'
 
 jobs:
   run_script:
