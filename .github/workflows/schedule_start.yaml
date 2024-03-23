@@ -1,25 +1,3 @@
-Skip to content
-Y1k1
-/
-Heureka_Home
- 
-Type / to search
- 
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-Scheduled Python Script
- 
-Scheduled Python Script #5
-Jobs
-Run details
-Workflow file for this run
-.github/workflows/schedule_start.yaml at ee67d8b
  name: Scheduled Python Script
 
 on:
@@ -63,4 +41,3 @@ jobs:
     - name: Run Python script if time matches
       if: env.MATCH_TIME == 'true'
       run: python start_run.py do this work
-Update schedule_start.yaml · Y1k1/Heureka_Home@ee67d8b
