@@ -2,7 +2,7 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '0 * */1 * *'  # Runs at the start of every hour
+    - cron: '19 8 * * *'  # Runs every day at 08:15 UTC
   workflow_dispatch:
     inputs:
       hour:
@@ -15,9 +15,8 @@ on:
         default: '15'
 
 jobs:
-  check_time_and_run:
+  run_script:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -30,15 +29,5 @@ jobs:
     - name: Install dependencies
       run: pip install requests
 
-    - name: Check if current time matches user-specified time
-      id: check-time
-      run: |
-        CURRENT_HOUR=$(date +'%H')
-        CURRENT_MINUTE=$(date +'%M')
-        if [ "$CURRENT_HOUR" -eq "${{ github.event.inputs.hour }}" ] && [ "$CURRENT_MINUTE" -eq "${{ github.event.inputs.minute }}" ]; then
-          echo "MATCH_TIME=true" >> $GITHUB_ENV
-        fi
-
-    - name: Run Python script if time matches
-      if: env.MATCH_TIME == 'true'
-      run: python start_run.py do this work
+    - name: Run Python script
+      run: python start_run.py
