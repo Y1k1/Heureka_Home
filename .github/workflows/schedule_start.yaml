@@ -2,7 +2,7 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '50 21 * * *'  # Runs at 21:50 UTC, which is 6:50 AM JST of the following day
+    - cron: '53 6 * * *'  # Runs at 21:50 UTC, which is 6:50 AM JST of the following day
   workflow_dispatch:
 
 jobs:
