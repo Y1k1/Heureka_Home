@@ -12,7 +12,7 @@ on:
       minute:
         description: 'Minute (0-59)'
         required: true
-        default: '00'
+        default: '5'
 
 jobs:
   check_time_and_run:
