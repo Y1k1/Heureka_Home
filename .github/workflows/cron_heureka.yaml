@@ -2,7 +2,7 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '21 8 * * *'  # Runs every day at 08:15 UTC
+    - cron: '8 30 * * *'  # Runs every day at 08:15 UTC
   workflow_dispatch:
     inputs:
       hour:
@@ -12,7 +12,7 @@ on:
       minute:
         description: 'Minute (0-59)'
         required: true
-        default: '21'
+        default: '30'
 
 jobs:
   run_script:
