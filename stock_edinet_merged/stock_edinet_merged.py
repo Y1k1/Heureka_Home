@@ -218,6 +218,22 @@ print(result_df)
 # Save the result to a new CSV file
 result_df.to_csv(os.path.join(script_directory, 'merged_data.csv'), index=False)
 
+import pandas as pd
+import os
+
+script_path = os.path.abspath(__file__)
+script_dir = os.path.dirname(script_path)
+os.chdir(script_dir)
+
+# Load the CSV data
+data = pd.read_csv('merged_data.csv')
+
+# Filter out rows where 'number' column is 0
+filtered_data = data[data['number'] != 0]
+
+# Save the filtered data to a new CSV file
+filtered_data.to_csv('merged_data.csv', index=False)
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
