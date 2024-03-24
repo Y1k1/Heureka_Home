@@ -18,11 +18,18 @@ import requests
 
 url = 'https://yk-fuku.onrender.com'
 
-# Send a GET request to the URL
-response = requests.get(url)
+try:
+    # Send a GET request to the URL with a timeout of 10 seconds
+    response = requests.get(url, timeout=10)
 
-# Print the status code (200 means success)
-print("Status Code:", response.status_code)
+    # Print the status code (200 means success)
+    print("Status Code:", response.status_code)
 
-# Print the response content
-print("Response Content:", response.content)
+    # Print the response content
+    print("Response Content:", response.content)
+except requests.exceptions.Timeout:
+    # This code will be executed if the request takes longer than 10 seconds
+    print("The request timed out after 10 seconds.")
+except requests.exceptions.RequestException as e:
+    # This code will handle other kinds of exceptions
+    print(f"An error occurred: {e}")
