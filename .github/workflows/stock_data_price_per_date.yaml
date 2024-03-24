@@ -2,17 +2,8 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '30 21 */1 * *'  # Runs every day at 08:15 UTC
+    - cron: '30 8 * * 1-5'  # Runs at 8:30 AM, Monday to Friday
   workflow_dispatch:
-    inputs:
-      hour:
-        description: 'Hour (0-23, in UTC)'
-        required: true
-        default: '21'
-      minute:
-        description: 'Minute (0-59)'
-        required: true
-        default: '30'
 
 jobs:
   run_script:
@@ -20,7 +11,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -31,3 +22,7 @@ jobs:
 
     - name: Run Python script
       run: python stock_data_price_per_date/stock_data_price_per_date.py
+      shell: /usr/bin/bash -e {0}
+      env:
+        pythonLocation: /opt/hostedtoolcache/Python/3.10.13/x64
+        LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.13/x64/lib
