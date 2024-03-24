@@ -25,6 +25,7 @@ jobs:
         pip install google-auth-oauthlib
         pip install google-auth-httplib2
         pip install google-api-python-client
+        pip install beautifulsoup4
         pip install pandas
     - name: Run Python script
       run: python stock_edinet_merged/stock_edinet_merged.py
