@@ -75,6 +75,34 @@ else:
     print("Failed to download the file.")
 
 import csv
+import os
+
+script_path = os.path.abspath(__file__)
+script_dir = os.path.dirname(script_path)
+os.chdir(script_dir)
+
+file_path = 'EdinetcodeDlInfo.csv'
+
+def process_csv(encoding):
+    with open(file_path, mode='r', encoding=encoding) as file:
+        reader = csv.reader(file)
+        # Filtering rows: Keep if the third column is 'Listed company'
+        return [row for row in reader if len(row) > 2 and row[2].strip() == 'Listed company']
+
+try:
+    rows = process_csv('utf-8')
+except UnicodeDecodeError:
+    rows = process_csv('ISO-8859-1')
+
+if rows:
+    with open(file_path, mode='w', encoding='utf-8', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+    print("CSV file has been updated with listed companies only.")
+else:
+    print("No rows with 'Listed company' found. The file has not been modified.")
+
+import csv
 import requests
 from bs4 import BeautifulSoup
 
