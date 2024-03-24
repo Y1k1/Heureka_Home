@@ -30,4 +30,4 @@ jobs:
       run: pip install requests
 
     - name: Run Python script
-      run: python stock_data_price_per_date.py
+      run: python stock_data_price_per_date/stock_data_price_per_date.py
