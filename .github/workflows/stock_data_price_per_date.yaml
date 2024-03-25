@@ -49,8 +49,8 @@ jobs:
         run: |
           git config --global user.name 'Y1k1'
           git config --global user.email '1510306@junten.ed.jp'
-          git add ./stock_data_price_per_date_pre/*  # Add contents of the first folder
-          git add ./stock_data_price_per_date/*      # Add contents of the second folder
+          git add ./stock_data_price_per_date_pre/.gitkeep
+          git add ./stock_data_price_per_date/.gitkeep
           git commit -m "Add updated stock data results"
           git push
     
