@@ -33,7 +33,7 @@ jobs:
         working-directory: ./stock_data_price_per_date
         shell: bash
 
-      - name: Run stock_data_price_per_date.py 43 times
+      - name: Run stock_data_price_per_date.py 8 times
         run: |
           for i in {1..8}
           do
