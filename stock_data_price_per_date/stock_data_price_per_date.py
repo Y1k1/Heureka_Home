@@ -72,7 +72,7 @@ def scrape_stock_data(url):
     data_for_past_week = []
     for i in range(50):
         current_date = today_date - timedelta(days=i)
-        current_date_str = current_date.strftime("%m/%d").lstrip('0').replace('/0', '/')
+        current_date_str = current_date.strftime("%-m/%-d")
         start_price, high_price, low_price, end_price, trading_volume = None, None, None, None, None
         for row in rows:
             header_cell = row.find("th", class_="sticky")
