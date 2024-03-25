@@ -27,7 +27,8 @@ jobs:
         pip install google-auth-httplib2
         pip install google-api-python-client
     - name: Run Python script
-      run: python stock_data_price_per_date/stock_data_price_per_date.py
+      run: python stock_data_price_per_date.py
+      working-directory: ./stock_data_price_per_date
       shell: /usr/bin/bash -e {0}
       env:
         pythonLocation: /opt/hostedtoolcache/Python/3.10.13/x64
