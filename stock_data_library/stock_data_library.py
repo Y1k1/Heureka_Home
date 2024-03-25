@@ -202,14 +202,14 @@ new_df.to_csv('stock_data_var2.csv', index=False)
 print("Data scraping and CSV creation completed.")
 
 # Function to process the CSV file
+# Function to process the CSV file
 def process_csv(input_filename, output_filename):
     processed_data = []
 
     with open(input_filename, 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         headers = next(reader)  # Reading the header row
-        headers.append('Genre')  # Add Genre column to headers
-        processed_data.append(headers)
+        processed_data.append(headers)  # Use existing headers, do not append 'Genre' again
 
         for row in reader:
             if row:  # Checking if the row is not empty
@@ -220,9 +220,7 @@ def process_csv(input_filename, output_filename):
                     row[4] = '普通'
                 elif 'gyouseki_4.gif' in evaluation_class or 'gyouseki_5.gif' in evaluation_class:
                     row[4] = '悪い'
-
-                # Append Genre information to the row
-                row.append('')
+                # Do not append Genre information again, it's already there
                 processed_data.append(row)
 
     with open(output_filename, 'w', newline='', encoding='utf-8') as file:
