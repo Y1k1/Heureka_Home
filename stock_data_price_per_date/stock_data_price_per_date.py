@@ -104,7 +104,7 @@ with open("stock_data_var2_complete.csv", "r", newline="") as csvfile:
         if not os.path.exists("stock_data_price_per_date"):
             os.makedirs("stock_data_price_per_date")
         # Write the scraped data to a new CSV file
-        with open(os.path.join("result", "{}_past.csv".format(number)), "w", newline="") as resultfile:
+        with open(os.path.join("stock_data_price_per_date", "{}_past.csv".format(number)), "w", newline="") as resultfile:
             writer = csv.writer(resultfile)
             writer.writerow(["Date", "始値", "高値", "安値", "終値", "売買高(株)"])
             writer.writerows(data_for_past_week)
