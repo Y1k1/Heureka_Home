@@ -28,20 +28,6 @@ jobs:
           pip install google-auth-httplib2
           pip install google-api-python-client
 
-      # Step to create and/or clear the contents of stock_data_price_per_date
-      - name: Prepare stock_data_price_per_date directory
-        run: |
-          mkdir -p stock_data_price_per_date
-          rm -rf stock_data_price_per_date/*
-        shell: bash
-
-      # Step to create and/or clear the contents of stock_data_price_per_date_pre
-      - name: Prepare stock_data_price_per_date_pre directory
-        run: |
-          mkdir -p stock_data_price_per_date_pre
-          rm -rf stock_data_price_per_date_pre/*
-        shell: bash
-
       - name: Run stock_data_price_per_date_gd.py
         run: python stock_data_price_per_date_gd.py
         working-directory: ./stock_data_price_per_date
