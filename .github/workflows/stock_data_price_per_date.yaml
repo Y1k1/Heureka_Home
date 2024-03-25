@@ -27,21 +27,24 @@ jobs:
           pip install google-auth-oauthlib
           pip install google-auth-httplib2
           pip install google-api-python-client
+          
+      - name: Create directories and add .gitkeep files
+        run: |
+          mkdir -p ./stock_data_price_per_date/stock_data_price_per_date_pre
+          mkdir -p ./stock_data_price_per_date/stock_data_price_per_date
+          touch ./stock_data_price_per_date/stock_data_price_per_date_pre/.gitkeep
+          touch ./stock_data_price_per_date/stock_data_price_per_date/.gitkeep
+
 
       - name: Run stock_data_price_per_date_gd.py
         run: python stock_data_price_per_date_gd.py
         working-directory: ./stock_data_price_per_date
         shell: bash
 
-      - name: Run stock_data_price_per_date.py 8 times
-        run: |
-          for i in {1..8}
-          do
-            echo "Running iteration $i"
-            python stock_data_price_per_date.py
-          done
+      - name: Run Python script
+        run: python stock_data_price_per_date.py
         working-directory: ./stock_data_price_per_date
-        shell: bash
+        shell: bash  # Changed to bash for macOS compatibility
 
       - name: Upload stock_data_price_per_date folder as an artifact
         uses: actions/upload-artifact@v2
