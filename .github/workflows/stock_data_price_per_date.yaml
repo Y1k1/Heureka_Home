@@ -53,6 +53,8 @@ jobs:
           git add ./stock_data_price_per_date/.gitkeep
           git commit -m "Add updated stock data results"
           git push
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Run stock_data_price_per_date_gu.py
         run: python stock_data_price_per_date_gu.py
