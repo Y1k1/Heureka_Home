@@ -51,6 +51,42 @@ folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
 # Download the file
 download_file_from_drive(file_name, folder_id)
 
+import pandas as pd
+import os
+
+# File path for the original CSV file
+file_path = 'stock_data_var2_complete.csv'
+
+# Folder where the split files will be saved
+save_folder = 'stock_data_price_per_date_pre'
+
+# Create the folder if it doesn't exist
+if not os.path.exists(save_folder):
+    os.makedirs(save_folder)
+
+# Read the data
+data = pd.read_csv(file_path)
+
+# Split data into chunks of 50 rows
+chunk_size = 50
+num_chunks = len(data) // chunk_size + (1 if len(data) % chunk_size else 0)
+
+for i in range(num_chunks):
+    # Define the start and end of each chunk
+    start = i * chunk_size
+    end = start + chunk_size
+
+    # Extract the chunk
+    chunk = data.iloc[start:end]
+
+    # Define the chunk file name, including the folder
+    chunk_file_name = os.path.join(save_folder, f'stock_data_var2_complete_{i + 1}.csv')
+
+    # Save the chunk to a new CSV file
+    chunk.to_csv(chunk_file_name, index=False)
+
+print(f'Done! Data has been split into {num_chunks} files in the "{save_folder}" folder.')
+ 
 import csv
 import os
 import requests
@@ -91,24 +127,42 @@ def scrape_stock_data(url):
             data_for_past_week.append([current_date_str, start_price, high_price, low_price, end_price, trading_volume])
     return data_for_past_week
 
-# Read the CSV file and process each row
-with open("stock_data_var2_complete.csv", "r", newline="") as csvfile:
-    reader = csv.reader(csvfile)
-    next(reader)  # Skip header
-    for row in reader:
-        number = row[1]
-        url = "https://s.kabutan.jp/stocks/{}/historical_prices/daily/".format(number)
-        data_for_past_week = scrape_stock_data(url)
-        time.sleep(0)
-        # Create a directory to store results if it doesn't exist
-        if not os.path.exists("stock_data_price_per_date"):
-            os.makedirs("stock_data_price_per_date")
-        # Write the scraped data to a new CSV file
-        with open(os.path.join("stock_data_price_per_date", "{}_past.csv".format(number)), "w", newline="") as resultfile:
-            writer = csv.writer(resultfile)
-            writer.writerow(["Date", "始値", "高値", "安値", "終値", "売買高(株)"])
-            writer.writerows(data_for_past_week)
-        print("Data for Number {} saved to result/{}_past.csv".format(number, number))
+# Function to process each CSV file
+# Function to process each CSV file
+def process_file(file_name):
+    with open(file_name, "r", newline="", encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  # Skip header
+        for row in reader:
+            number = row[1]
+            url = f"https://s.kabutan.jp/stocks/{number}/historical_prices/daily/"
+            data_for_past_week = scrape_stock_data(url)
+            time.sleep(0)  # Polite delay
+
+            # Create a directory to store results if it doesn't exist
+            result_dir = "stock_data_price_per_date"
+            if not os.path.exists(result_dir):
+                os.makedirs(result_dir)
+
+            # Write the scraped data to a new CSV file
+            with open(os.path.join(result_dir, f"{number}_past.csv"), "w", newline="", encoding='utf-8') as resultfile:
+                writer = csv.writer(resultfile)
+                writer.writerow(["Date", "始値", "高値", "安値", "終値", "売買高(株)"])
+                writer.writerows(data_for_past_week)
+            print(f"Data for Number {number} saved to {result_dir}/{number}_past.csv")
+
+# Directory containing the split CSV files
+input_dir = "stock_data_price_per_date_pre"
+
+# Iterate over each file in the directory
+for file_name in os.listdir(input_dir):
+    full_path = os.path.join(input_dir, file_name)
+    if os.path.isfile(full_path) and file_name.startswith("stock_data_var2_complete_"):
+        process_file(full_path)
+        os.remove(full_path)  # Delete the file after processing
+        time.sleep(10)  # Wait for 10 seconds after deleting the file
+
+print("All files processed and removed.")
 
 import os
 import zipfile
