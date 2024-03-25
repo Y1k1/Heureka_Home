@@ -43,6 +43,18 @@ jobs:
         working-directory: ./stock_data_price_per_date
         shell: bash
 
+      - name: Upload stock_data_price_per_date folder as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: stock_data_price_per_date
+          path: stock_data_price_per_date/
+
+      - name: Upload stock_data_price_per_date_pre folder as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: stock_data_price_per_date_pre
+          path: stock_data_price_per_date_pre/
+
       - name: Run stock_data_price_per_date_gu.py
         run: python stock_data_price_per_date_gu.py
         working-directory: ./stock_data_price_per_date
