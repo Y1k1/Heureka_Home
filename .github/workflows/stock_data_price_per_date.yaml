@@ -7,7 +7,7 @@ on:
 
 jobs:
   run_script:
-    runs-on: windows-latest
+    runs-on: macos-latest  # Now using macOS runner
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,4 +30,4 @@ jobs:
       - name: Run Python script
         run: python stock_data_price_per_date.py
         working-directory: ./stock_data_price_per_date
-        shell: cmd
+        shell: bash  # Changed to bash for macOS compatibility
