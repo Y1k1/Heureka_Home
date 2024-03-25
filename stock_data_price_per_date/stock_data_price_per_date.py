@@ -91,25 +91,26 @@ def scrape_stock_data(url):
             data_for_past_week.append([current_date_str, start_price, high_price, low_price, end_price, trading_volume])
     return data_for_past_week
 
-# Read the CSV file and process each row
-with open("stock_data_var2_complete.csv", "r", newline="", encoding="utf-8") as csvfile:
-    reader = csv.reader(csvfile)
-    next(reader)  # Skip header
-    for row in reader:
-        number = row[1]
-        url = "https://s.kabutan.jp/stocks/{}/historical_prices/daily/".format(number)
-        data_for_past_week = scrape_stock_data(url)
-        time.sleep(0)  
-        # Create a directory to store results if it doesn't exist
-        if not os.path.exists("stock_data_price_per_date"):
-            os.makedirs("stock_data_price_per_date")
-        # Write the scraped data to a new CSV file
-        with open(os.path.join("stock_data_price_per_date", "{}_past.csv".format(number)), "w", newline="") as resultfile:
-            writer = csv.writer(resultfile)
-            writer.writerow(["Date", "始値", "高値", "安値", "終値", "売買高(株)"])
-            writer.writerows(data_for_past_week)
-        print("Data for Number {} saved to result/{}_past.csv".format(number, number))
+# Open the file to write the integrated data
+with open("integrated_past.csv", "w", newline="", encoding="utf-8") as resultfile:
+    writer = csv.writer(resultfile)
+    writer.writerow(["Number", "Date", "始値", "高値", "安値", "終値", "売買高(株)"])
 
+    with open("stock_data_var2_complete.csv", "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  # Skip header
+        for row in reader:
+            number = row[1]
+            url = "https://s.kabutan.jp/stocks/{}/historical_prices/daily/".format(number)
+            data_for_past_week = scrape_stock_data(url)
+            time.sleep(0)  # You might want to consider adding a delay here to prevent overloading the server
+
+            # Append the scraped data to the integrated CSV file
+            for data_row in data_for_past_week:
+                writer.writerow([number] + data_row)
+
+            print("Data for Number {} processed".format(number))
+            
 import os
 import zipfile
 from google.oauth2 import service_account
