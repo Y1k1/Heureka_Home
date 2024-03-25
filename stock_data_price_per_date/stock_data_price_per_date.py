@@ -99,7 +99,7 @@ with open("stock_data_var2_complete.csv", "r", newline="", encoding="utf-8") as 
         number = row[1]
         url = "https://s.kabutan.jp/stocks/{}/historical_prices/daily/".format(number)
         data_for_past_week = scrape_stock_data(url)
-        time.sleep(0)  
+        time.sleep(1)  
         # Create a directory to store results if it doesn't exist
         if not os.path.exists("stock_data_price_per_date"):
             os.makedirs("stock_data_price_per_date")
