@@ -92,7 +92,7 @@ def scrape_stock_data(url):
     return data_for_past_week
 
 # Read the CSV file and process each row
-with open("stock_data_var2_complete.csv", "r", newline="") as csvfile:
+with open("stock_data_var2_complete.csv", "r", newline="", encoding="utf-8") as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # Skip header
     for row in reader:
