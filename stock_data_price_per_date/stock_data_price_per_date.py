@@ -186,3 +186,37 @@ target_folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
 
 # Upload the zipped folder to Google Drive
 upload_file_to_drive(zip_file_name, target_folder_id)
+
+import os
+import shutil
+
+# Get the directory of the current script
+script_path = os.path.abspath(__file__)
+script_dir = os.path.dirname(script_path)
+
+# Change the current working directory to the script's directory
+os.chdir(script_dir)
+
+# File and folder names
+file_name = 'stock_data_price_per_date.zip'
+folder_name = 'stock_data_price_per_date'
+
+# Delete the file
+if os.path.exists(file_name):
+    try:
+        os.remove(file_name)
+        print(f"File '{file_name}' has been successfully deleted.")
+    except OSError as e:
+        print(f"Error deleting file: {e.strerror}")
+else:
+    print(f"File '{file_name}' does not exist.")
+
+# Delete the folder
+if os.path.exists(folder_name) and os.path.isdir(folder_name):
+    try:
+        shutil.rmtree(folder_name)
+        print(f"Folder '{folder_name}' has been successfully deleted.")
+    except OSError as e:
+        print(f"Error deleting folder: {e.strerror}")
+else:
+    print(f"Folder '{folder_name}' does not exist or is not a folder.")
