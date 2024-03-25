@@ -35,7 +35,7 @@ jobs:
 
       - name: Run stock_data_price_per_date.py 43 times
         run: |
-          for i in {1..43}
+          for i in {1..8}
           do
             echo "Running iteration $i"
             python stock_data_price_per_date.py
