@@ -28,6 +28,13 @@ jobs:
           pip install google-auth-httplib2
           pip install google-api-python-client
 
+      - name: Ensure folders exist
+        run: |
+          mkdir -p ./stock_data_price_per_date_pre
+          mkdir -p ./stock_data_price_per_date
+          touch ./stock_data_price_per_date_pre/.gitkeep
+          touch ./stock_data_price_per_date/.gitkeep
+
       - name: Run stock_data_price_per_date_gd.py
         run: python stock_data_price_per_date_gd.py
         working-directory: ./stock_data_price_per_date
