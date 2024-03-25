@@ -65,12 +65,23 @@ def process_file(file_name):
 # Directory containing the split CSV files
 input_dir = "stock_data_price_per_date_pre"
 
+# Counter for the number of processed files
+processed_files_count = 0
+
+# Maximum number of files to process
+max_files_to_process = 2
+
 # Iterate over each file in the directory
 for file_name in os.listdir(input_dir):
     full_path = os.path.join(input_dir, file_name)
     if os.path.isfile(full_path) and file_name.startswith("stock_data_var2_complete_"):
         process_file(full_path)
         os.remove(full_path)  # Delete the file after processing
-        time.sleep(10)  # Wait for 10 seconds after deleting the file
+        processed_files_count += 1  # Increment the counter
+        time.sleep(5)  # Wait for 10 seconds after deleting the file
 
-print("All files processed and removed.")
+        # Break the loop after processing two files
+        if processed_files_count >= max_files_to_process:
+            break
+
+print(f"{processed_files_count} files processed and removed.")
