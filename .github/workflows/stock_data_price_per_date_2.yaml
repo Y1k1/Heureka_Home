@@ -28,43 +28,17 @@ jobs:
           pip install google-auth-httplib2
           pip install google-api-python-client
 
-      # Step to create and/or clear the contents of stock_data_price_per_date
-      - name: Prepare stock_data_price_per_date directory
-        run: |
-          mkdir -p stock_data_price_per_date
-          rm -rf stock_data_price_per_date/*
-        shell: bash
-
-      # Step to create and/or clear the contents of stock_data_price_per_date_pre
-      - name: Prepare stock_data_price_per_date_pre directory
-        run: |
-          mkdir -p stock_data_price_per_date_pre
-          rm -rf stock_data_price_per_date_pre/*
-        shell: bash
-
-      - name: Run stock_data_price_per_date_gd.py
-        run: python stock_data_price_per_date_gd.py
+      - name: Run stock_data_price_per_date_gd_continue.py
+        run: stock_data_price_per_date_gd_continue.py
         working-directory: ./stock_data_price_per_date
         shell: bash
 
-      - name: Run stock_data_price_per_date.py 8 times
-        run: |
-          for i in {1..8}
-          do
-            echo "Running iteration $i"
-            python stock_data_price_per_date.py
-          done
+      - name: Run Python script
+        run: python stock_data_price_per_date.py
         working-directory: ./stock_data_price_per_date
-        shell: bash
-
-      - name: Upload stock_data_price_per_date folder as an artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: stock_data_price_per_date
-          path: stock_data_price_per_date/
-
-      - name: Upload stock_data_price_per_date_pre folder as an artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: stock_data_price_per_date_pre
-          path: stock_data_price_per_date_pre/
+        shell: bash  # Changed to bash for macOS compatibility
+    
+      - name: Run stock_data_price_per_date_gu_continue.py
+        run: python stock_data_price_per_date_gu_continue.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash 
