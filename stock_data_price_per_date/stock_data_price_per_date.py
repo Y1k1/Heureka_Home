@@ -69,7 +69,7 @@ input_dir = "stock_data_price_per_date_pre"
 processed_files_count = 0
 
 # Maximum number of files to process
-max_files_to_process = 2
+max_files_to_process = 3
 
 # Iterate over each file in the directory
 for file_name in os.listdir(input_dir):
