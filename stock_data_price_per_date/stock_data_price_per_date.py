@@ -73,15 +73,19 @@ max_files_to_process = 3
 
 # Iterate over each file in the directory
 for file_name in os.listdir(input_dir):
-    full_path = os.path.join(input_dir, file_name)
-    if os.path.isfile(full_path) and file_name.startswith("stock_data_var2_complete_"):
-        process_file(full_path)
-        os.remove(full_path)  # Delete the file after processing
-        processed_files_count += 1  # Increment the counter
-        time.sleep(5)  # Wait for 10 seconds after deleting the file
+    try:
+        full_path = os.path.join(input_dir, file_name)
+        if os.path.isfile(full_path) and file_name.startswith("stock_data_var2_complete_"):
+            process_file(full_path)
+            os.remove(full_path)  # Delete the file after processing
+            processed_files_count += 1  # Increment the counter
+            time.sleep(5)  # Wait for 5 seconds after deleting the file
 
-        # Break the loop after processing two files
-        if processed_files_count >= max_files_to_process:
-            break
+            # Break the loop after processing max_files_to_process
+            if processed_files_count >= max_files_to_process:
+                break
+    except Exception as e:
+        print(f"An error occurred while processing {file_name}: {e}")
+
 
 print(f"{processed_files_count} files processed and removed.")
