@@ -28,13 +28,6 @@ jobs:
           pip install google-auth-httplib2
           pip install google-api-python-client
 
-      - name: Ensure folders exist
-        run: |
-          mkdir -p ./stock_data_price_per_date_pre
-          mkdir -p ./stock_data_price_per_date
-          touch ./stock_data_price_per_date_pre/.gitkeep
-          touch ./stock_data_price_per_date/.gitkeep
-
       - name: Run stock_data_price_per_date_gd.py
         run: python stock_data_price_per_date_gd.py
         working-directory: ./stock_data_price_per_date
@@ -44,19 +37,8 @@ jobs:
         run: python stock_data_price_per_date.py
         working-directory: ./stock_data_price_per_date
         shell: bash  # Changed to bash for macOS compatibility
-
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name 'Y1k1'
-          git config --global user.email '1510306@junten.ed.jp'
-          git add ./stock_data_price_per_date_pre/.gitkeep
-          git add ./stock_data_price_per_date/.gitkeep
-          git commit -m "Add updated stock data results"
-          git push
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Run stock_data_price_per_date_gu.py
         run: python stock_data_price_per_date_gu.py
         working-directory: ./stock_data_price_per_date
-        shell: bash
+        shell: bash 
