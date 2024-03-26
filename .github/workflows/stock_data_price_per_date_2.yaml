@@ -6,10 +6,6 @@ on:
     - cron: '0-33/3 9 * * 1-5'   # Every 3 minutes from 9:00 to 9:33
     - cron: '35-59/3 9 * * 1-5'  # Every 3 minutes from 9:35 to 9:59
     - cron: '0-33/3 10 * * 1-5'  # Every 3 minutes from 10:00 to 10:33
-    - cron: '35-59/3 10 * * 1-5' # Every 3 minutes from 10:35 to 10:59
-    - cron: '0-33/3 11 * * 1-5'  # Every 3 minutes from 11:00 to 11:33
-    - cron: '35-59/3 11 * * 1-5' # Every 3 minutes from 11:35 to 11:59
-    - cron: '0-33/3 12 * * 1-5'  # Every 3 minutes from 12:00 to 12:33
   workflow_dispatch:
 
 jobs:
