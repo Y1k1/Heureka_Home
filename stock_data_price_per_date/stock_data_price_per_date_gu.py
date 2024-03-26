@@ -88,7 +88,26 @@ def upload_file_to_drive(file_path, target_folder_id):
         ).execute()
         print(f'Uploaded {file_name} with File ID: {uploaded_file.get("id")}')
 
+# Function to clear the contents of a specified folder on Google Drive
+def clear_drive_folder_contents(folder_id):
+    # List all files in the folder
+    response = drive_service.files().list(
+        q=f"'{folder_id}' in parents",
+        spaces='drive',
+        fields='files(id, name)'
+    ).execute()
+    files = response.get('files', [])
+
+    # Delete each file in the folder
+    for file in files:
+        drive_service.files().delete(fileId=file.get('id')).execute()
+
+# Updated process_folder function to clear folder contents before uploading
 def process_folder(folder_name, target_folder_id, zip_only_files=False):
+    # Clear the contents of the target folder on Google Drive
+    clear_drive_folder_contents(target_folder_id)
+
+    # The rest of the function remains unchanged
     folder_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), folder_name)
     zip_file_name = f'{folder_name}.zip'
     if zip_only_files:
@@ -97,6 +116,7 @@ def process_folder(folder_name, target_folder_id, zip_only_files=False):
         zip_directory(folder_path, zip_file_name)
     upload_file_to_drive(zip_file_name, target_folder_id)
 
+# Define the target Google Drive folder ID
 # Define the target Google Drive folder ID
 target_folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
 
