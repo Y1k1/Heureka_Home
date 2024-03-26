@@ -91,23 +91,37 @@ def upload_file_to_drive(file_path, target_folder_id):
 def process_folder(folder_name, target_folder_id, zip_only_files=False):
     folder_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), folder_name)
     base_zip_file_name = f'{folder_name}'
-    zip_file_index = 1
+    
+    # Fetch existing files from Google Drive
+    response = drive_service.files().list(
+        q=f"'{target_folder_id}' in parents and name contains '{base_zip_file_name}' and mimeType='application/zip'",
+        spaces='drive',
+        fields='files(name)'
+    ).execute()
+    existing_files = response.get('files', [])
+    
+    # Determine the next available index for the zip file
+    max_index = 0
+    for file in existing_files:
+        file_name = file.get('name')
+        if file_name.startswith(base_zip_file_name) and file_name.endswith('.zip'):
+            try:
+                index = int(file_name[len(base_zip_file_name) + 1:file_name.rfind('.')])
+                max_index = max(max_index, index)
+            except ValueError:
+                continue
 
-    # Create a unique zip file name by incrementing the index if the file already exists
+    zip_file_index = max_index + 1
     zip_file_name = f'{base_zip_file_name}_{zip_file_index}.zip'
-    while os.path.exists(zip_file_name):
-        zip_file_index += 1
-        zip_file_name = f'{base_zip_file_name}_{zip_file_index}.zip'
 
+    # Zip the folder or files
     if zip_only_files:
         zip_files(folder_path, zip_file_name)
     else:
         zip_directory(folder_path, zip_file_name)
 
+    # Upload the zip file to Google Drive
     upload_file_to_drive(zip_file_name, target_folder_id)
-
-# Define the target Google Drive folder ID
-target_folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
 
 # Create 'stock_data_price_per_date' folder on Drive if not exists
 stock_data_folder_id = create_drive_folder_if_not_exists('stock_data_price_per_date', target_folder_id)
