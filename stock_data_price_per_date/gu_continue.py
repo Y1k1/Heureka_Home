@@ -123,6 +123,10 @@ def process_folder(folder_name, target_folder_id, zip_only_files=False):
     # Upload the zip file to Google Drive
     upload_file_to_drive(zip_file_name, target_folder_id)
 
+
+# Define the target Google Drive folder ID
+target_folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
+
 # Create 'stock_data_price_per_date' folder on Drive if not exists
 stock_data_folder_id = create_drive_folder_if_not_exists('stock_data_price_per_date', target_folder_id)
 
