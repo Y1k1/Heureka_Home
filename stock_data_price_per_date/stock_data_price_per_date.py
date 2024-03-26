@@ -48,7 +48,7 @@ def process_file(file_name):
             number = row[1]
             url = f"https://s.kabutan.jp/stocks/{number}/historical_prices/daily/"
             data_for_past_week = scrape_stock_data(url)
-            time.sleep(0)  # Polite delay
+            time.sleep(1)  # Polite delay
 
             # Create a directory to store results if it doesn't exist
             result_dir = "stock_data_price_per_date"
