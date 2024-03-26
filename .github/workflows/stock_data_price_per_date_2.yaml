@@ -2,10 +2,8 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '35-59/3 8 * * 1-5'  # Every 3 minutes from 8:35 to 8:59
-    - cron: '0-33/3 9 * * 1-5'   # Every 3 minutes from 9:00 to 9:33
-    - cron: '35-59/3 9 * * 1-5'  # Every 3 minutes from 9:35 to 9:59
-    - cron: '0-36/3 10 * * 1-5'  # Every 3 minutes from 10:00 to 10:33
+    - cron: '35-59/1 8 * * 1-5'  # Every 3 minutes from 8:35 to 8:59
+    - cron: '0-19/1 9 * * 1-5'   # Every 3 minutes from 9:00 to 9:33
   workflow_dispatch:
 
 jobs:
