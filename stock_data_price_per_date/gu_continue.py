@@ -2,8 +2,7 @@ import os
 import zipfile
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
-
+from googleapiclient.http import MediaFileUpload
 
 # Load client secrets from the credentials.json file
 credentials = service_account.Credentials.from_service_account_file(
@@ -11,21 +10,42 @@ credentials = service_account.Credentials.from_service_account_file(
     scopes=['https://www.googleapis.com/auth/drive']
 )
 
-def download_file_from_drive(file_id, file_path):
-    request = drive_service.files().get_media(fileId=file_id)
-    with open(file_path, "wb") as fh:
-        downloader = MediaIoBaseDownload(fh, request)
-        done = False
-        while done is False:
-            status, done = downloader.next_chunk()
-        print("Download %d%%." % int(status.progress() * 100))
-
 # Build the Google Drive API client
 drive_service = build('drive', 'v3', credentials=credentials)
 
-def zip_directory(folder_path, output_filename, append=False):
-    mode = 'a' if append and os.path.exists(output_filename) else 'w'
-    with zipfile.ZipFile(output_filename, mode, zipfile.ZIP_DEFLATED) as zipf:
+# Function to check if folder exists on Drive and create if not
+def create_drive_folder_if_not_exists(folder_name, parent_id=None):
+    # Check if folder exists
+    response = drive_service.files().list(
+        q=f"mimeType='application/vnd.google-apps.folder' and name='{folder_name}' and trashed=false" + (f" and '{parent_id}' in parents" if parent_id else ""),
+        spaces='drive',
+        fields='files(id, name)'
+    ).execute()
+    folders = response.get('files', [])
+
+    # If folder does not exist, create it
+    if not folders:
+        folder_metadata = {
+            'name': folder_name,
+            'mimeType': 'application/vnd.google-apps.folder'
+        }
+        if parent_id:
+            folder_metadata['parents'] = [parent_id]
+
+        folder = drive_service.files().create(body=folder_metadata, fields='id').execute()
+        return folder.get('id')
+    return folders[0].get('id')
+
+# Function to zip files in a directory
+def zip_files(folder_path, output_filename, file_extension='.csv'):
+    with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file in os.listdir(folder_path):
+            if file.endswith(file_extension):
+                zipf.write(os.path.join(folder_path, file), file)
+
+# Function to zip the directory
+def zip_directory(folder_path, output_filename):
+    with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(folder_path):
             for file in files:
                 zipf.write(os.path.join(root, file), 
@@ -68,29 +88,29 @@ def upload_file_to_drive(file_path, target_folder_id):
         ).execute()
         print(f'Uploaded {file_name} with File ID: {uploaded_file.get("id")}')
 
-def process_folder(folder_name, target_folder_id, append_to_zip=False):
+def process_folder(folder_name, target_folder_id, zip_only_files=False):
     folder_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), folder_name)
-    zip_file_name = f'{folder_name}.zip'
+    base_zip_file_name = f'{folder_name}'
+    zip_file_index = 1
 
-    # Check if the file exists on Google Drive and download it if append_to_zip is True
-    if append_to_zip:
-        response = drive_service.files().list(
-            q=f"name='{zip_file_name}' and '{target_folder_id}' in parents",
-            spaces='drive',
-            fields='files(id, name)'
-        ).execute()
-        files = response.get('files', [])
+    # Create a unique zip file name by incrementing the index if the file already exists
+    zip_file_name = f'{base_zip_file_name}_{zip_file_index}.zip'
+    while os.path.exists(zip_file_name):
+        zip_file_index += 1
+        zip_file_name = f'{base_zip_file_name}_{zip_file_index}.zip'
 
-        if files:
-            file_id = files[0].get('id')
-            download_file_from_drive(file_id, zip_file_name)
+    if zip_only_files:
+        zip_files(folder_path, zip_file_name)
+    else:
+        zip_directory(folder_path, zip_file_name)
 
-    zip_directory(folder_path, zip_file_name, append=append_to_zip)
     upload_file_to_drive(zip_file_name, target_folder_id)
 
-
+# Define the target Google Drive folder ID
 target_folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'
 
-# Process each folder
-process_folder('stock_data_price_per_date', target_folder_id, append_to_zip=True)
-process_folder('stock_data_price_per_date_pre', target_folder_id)
+# Create 'stock_data_price_per_date' folder on Drive if not exists
+stock_data_folder_id = create_drive_folder_if_not_exists('stock_data_price_per_date', target_folder_id)
+
+# Process the folder 'stock_data_price_per_date'
+process_folder('stock_data_price_per_date', stock_data_folder_id, zip_only_files=True)
