@@ -1,0 +1,44 @@
+name: Scheduled Python Script
+
+on:
+  schedule:
+    - cron: '0-59/5 15 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest  # Changed to use Ubuntu runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+          pip install pandas
+          pip install beautifulsoup4
+          pip install google-auth
+          pip install oauthlib
+          pip install google-auth-oauthlib
+          pip install google-auth-httplib2
+          pip install google-api-python-client
+
+      - name: Run Python script
+        run: python gd_continue.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
+
+      - name: Run Python script
+        run: python stock_data_price_per_date.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
+    
+      - name: Run Python script
+        run: python gu_continue.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
