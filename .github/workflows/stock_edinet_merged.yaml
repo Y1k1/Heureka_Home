@@ -1,4 +1,4 @@
-name: Scheduled Python Script
+name: USING_EDINET
 
 on:
   schedule:
