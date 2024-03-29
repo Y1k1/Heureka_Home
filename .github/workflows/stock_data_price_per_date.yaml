@@ -1,4 +1,4 @@
-name: Scheduled Python Script
+name: STOCK_DATA_PER_DATE_INITHIAL
 
 on:
   schedule:
