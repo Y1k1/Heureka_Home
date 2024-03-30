@@ -22,9 +22,8 @@ jobs:
           pip install requests
           pip install pandas
           pip install beautifulsoup4
-          pip install google-auth
           pip install oauthlib
-          pip install PIL
+          pip install Pillow
 
       - name: Run commander_stock_moniter.py
         run: python commander_stock_moniter.py
