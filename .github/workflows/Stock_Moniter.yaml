@@ -34,6 +34,6 @@ jobs:
         run: |
           git config --local user.email "1510306@junten.ed.jp"
           git config --local user.name "Y1k1"
-          git add result.html
-          git commit -m "Add or update result.html" || echo "No changes to commit"
+          git add STOCK_MONITOR/result.html
+          git commit -m "Add or update STOCK_MONITOR/result.html" || echo "No changes to commit"
           git push
