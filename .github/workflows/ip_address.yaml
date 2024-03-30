@@ -1,5 +1,7 @@
 name: IP_ADDRESS
 
+on: [push, workflow_dispatch]
+
 jobs:
   find-ip:
     runs-on: ubuntu-latest
