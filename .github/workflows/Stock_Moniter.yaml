@@ -28,7 +28,7 @@ jobs:
           pip install google-auth-httplib2
           pip install google-api-python-client
 
-      - name: Run commander_stock_moniter.py.py
-        run: python commander_stock_moniter.py.py
+      - name: Run commander_stock_moniter.py
+        run: python commander_stock_moniter.py
         working-directory: ./STOCK_MONITER
         shell: bash
