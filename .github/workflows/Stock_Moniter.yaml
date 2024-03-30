@@ -1,4 +1,4 @@
-name: STOCK_DATA_PER_DATE_INITHIAL
+name: STOCK_MONITER
 
 on:
   schedule:
