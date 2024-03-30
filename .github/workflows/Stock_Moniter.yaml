@@ -24,9 +24,7 @@ jobs:
           pip install beautifulsoup4
           pip install google-auth
           pip install oauthlib
-          pip install google-auth-oauthlib
-          pip install google-auth-httplib2
-          pip install google-api-python-client
+          pip install PIL
 
       - name: Run commander_stock_moniter.py
         run: python commander_stock_moniter.py
