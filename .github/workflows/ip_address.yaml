@@ -1,0 +1,7 @@
+jobs:
+  find-ip:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get public IP
+      run: |
+        echo "The public IP is $(curl -s https://ifconfig.me)"
