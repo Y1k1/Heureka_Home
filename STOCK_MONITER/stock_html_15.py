@@ -6,7 +6,8 @@ import html
 def read_json(json_file):
     with open(json_file, 'r') as file:
         data = json.load(file)
-    return data['first_half'], data['later_half']
+    # Retrieve the first_half_15_image and later_half_15_image keys
+    return data['first_half_15_image'], data['later_half_15_image']
 
 def compare_base_heights(directory, first_half, later_half):
     stock_numbers = []
@@ -35,7 +36,7 @@ def read_stock_titles(csv_file, stock_numbers):
                 titles[row['Number']] = row['Title']
     return titles
 
-def save_results_html(stock_numbers, titles, output_file, first_half_15_image, later_half_15_image):
+def save_results_html(stock_numbers, titles, output_file, first_half, later_half):
     with open(output_file, 'w') as file:
         file.write('<!DOCTYPE html><html><head><style>')
         file.write('.grid-container {display: grid; grid-template-columns: auto auto; padding: 0; margin: 0;}')
@@ -46,7 +47,7 @@ def save_results_html(stock_numbers, titles, output_file, first_half_15_image, l
 
         for stock_number in stock_numbers:
             title = titles.get(stock_number, "Unknown Title")
-            iframe_url = f"{first_half_15_image}{stock_number}{later_half_15_image}"
+            iframe_url = f"{first_half}{stock_number}{later_half}"
             file.write(f'<div class="grid-item"><div class="title">{html.escape(title)}</div><iframe src="{html.escape(iframe_url)}"></iframe></div>')
 
         file.write('</div></body></html>')
@@ -58,10 +59,11 @@ json_file = 'src_data_stock_url.json'
 html_output_file = 'result_stock_git_15.html'
 
 # Execute functions
+# Updated to use the new keys
 first_half, later_half = read_json(json_file)
 stock_numbers = compare_base_heights(directory, first_half, later_half)
 titles = read_stock_titles(csv_file, stock_numbers)
-save_results_html(stock_numbers, titles, html_output_file, first_half_15_image, later_half_15_image)
+save_results_html(stock_numbers, titles, html_output_file, first_half, later_half)
 
 print("Comparison complete. Check result_stock_git_15.html for output.")
 
