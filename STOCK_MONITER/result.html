@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicked Keys and Mouse</title>
+</head>
+<body>
+
+<h1>Clicked Keys and Mouse:</h1>
+<ul id="clickedEvents"></ul>
+<p id="clickCount">Clicks per second: 0</p>
+
+<script>
+    var clickCounter = 0;
+
+    document.addEventListener('keydown', function(event) {
+        // Get the key code or key
+        var key = event.keyCode || event.key;
+
+        // Create a new list item for key press
+        var keyListItem = document.createElement('li');
+        keyListItem.textContent = 'Key Press: ' + key;
+
+        // Append the list item to the list
+        document.getElementById('clickedEvents').appendChild(keyListItem);
+    });
+
+    document.addEventListener('click', function(event) {
+        // Get the mouse coordinates
+        var mouseX = event.clientX;
+        var mouseY = event.clientY;
+
+        // Create a new list item for mouse click
+        var mouseListItem = document.createElement('li');
+        mouseListItem.textContent = 'Mouse Click: X=' + mouseX + ', Y=' + mouseY;
+
+        // Append the list item to the list
+        document.getElementById('clickedEvents').appendChild(mouseListItem);
+
+        // Increment click count
+        clickCounter++;
+    });
+
+    // Update click count every second
+    setInterval(function() {
+        document.getElementById('clickCount').textContent = 'Clicks per second: ' + clickCounter;
+        clickCounter = 0;  // Reset the count for the next second
+    }, 1000);  // Update every 1000 milliseconds (1 second)
+</script>
+
+</body>
+</html>
