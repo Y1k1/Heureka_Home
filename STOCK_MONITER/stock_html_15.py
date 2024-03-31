@@ -35,7 +35,7 @@ def read_stock_titles(csv_file, stock_numbers):
                 titles[row['Number']] = row['Title']
     return titles
 
-def save_results_html(stock_numbers, titles, output_file, first_half, later_half):
+def save_results_html(stock_numbers, titles, output_file, first_half_15_image, later_half_15_image):
     with open(output_file, 'w') as file:
         file.write('<!DOCTYPE html><html><head><style>')
         file.write('.grid-container {display: grid; grid-template-columns: auto auto; padding: 0; margin: 0;}')
@@ -46,7 +46,7 @@ def save_results_html(stock_numbers, titles, output_file, first_half, later_half
 
         for stock_number in stock_numbers:
             title = titles.get(stock_number, "Unknown Title")
-            iframe_url = f"{first_half}{stock_number}{later_half}"
+            iframe_url = f"{first_half_15_image}{stock_number}{later_half_15_image}"
             file.write(f'<div class="grid-item"><div class="title">{html.escape(title)}</div><iframe src="{html.escape(iframe_url)}"></iframe></div>')
 
         file.write('</div></body></html>')
@@ -61,7 +61,7 @@ html_output_file = 'result_stock_git_15.html'
 first_half, later_half = read_json(json_file)
 stock_numbers = compare_base_heights(directory, first_half, later_half)
 titles = read_stock_titles(csv_file, stock_numbers)
-save_results_html(stock_numbers, titles, html_output_file, first_half, later_half)
+save_results_html(stock_numbers, titles, html_output_file, first_half_15_image, later_half_15_image)
 
 print("Comparison complete. Check result_stock_git_15.html for output.")
 
