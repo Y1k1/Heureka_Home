@@ -29,11 +29,3 @@ jobs:
         run: python commander_stock_moniter.py
         working-directory: ./STOCK_MONITER
         shell: bash
-
-      - name: Commit and Push result.html
-        run: |
-          git config --local user.email "1510306@junten.ed.jp"
-          git config --local user.name "Y1k1"
-          git add STOCK_MONITOR/result.html
-          git commit -m "Add or update STOCK_MONITOR/result.html" || echo "No changes to commit"
-          git push
