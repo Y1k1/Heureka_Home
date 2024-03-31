@@ -1,0 +1,33 @@
+name: STOCK_DATA_PER_DATE_INTEGRATED
+
+on:
+  schedule:
+    - cron: '30 11 * * 1-5'  # Runs at 8:30 AM UTC, Monday to Friday
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  run_script:
+    runs-on: macos-latest  # Now using macOS runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+          pip install pandas
+          pip install google-auth
+          pip install oauthlib
+          pip install google-auth-oauthlib
+          pip install google-auth-httplib2
+          pip install google-api-python-client
+    
+      - name: Run stock_data_price_integrated.py
+        run: python stock_data_price_integrated.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash 
