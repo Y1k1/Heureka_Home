@@ -1,3 +1,25 @@
+import requests
+
+def download_file(url, filename):
+    try:
+        with requests.get(url, stream=True) as response:
+            # Check if the request was successful
+            if response.status_code == 200:
+                with open(filename, 'wb') as file:
+                    for chunk in response.iter_content(chunk_size=8192): 
+                        file.write(chunk)
+                return f"File downloaded successfully: {filename}"
+            else:
+                return f"Failed to download file. Status code: {response.status_code}"
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+# Example usage
+url = "https://yk-fuku.onrender.com/downrequp_a_t"
+filename = "git_pat.json"  # Replace with the appropriate file extension
+result = download_file(url, filename)
+print(result)
+
 import subprocess
 import threading
 import time
