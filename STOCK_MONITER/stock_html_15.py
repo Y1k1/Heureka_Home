@@ -55,7 +55,7 @@ def save_results_html(stock_numbers, titles, output_file, first_half, later_half
 directory = 'stock_chart_data_csv'
 csv_file = 'stock_data_var2_complete.csv'
 json_file = 'src_data_stock_url.json'
-html_output_file = 'result.html'
+html_output_file = 'result_stock_git_15.html'
 
 # Execute functions
 first_half, later_half = read_json(json_file)
@@ -63,7 +63,7 @@ stock_numbers = compare_base_heights(directory, first_half, later_half)
 titles = read_stock_titles(csv_file, stock_numbers)
 save_results_html(stock_numbers, titles, html_output_file, first_half, later_half)
 
-print("Comparison complete. Check result.html for output.")
+print("Comparison complete. Check result_stock_git_15.html for output.")
 
 import requests
 
@@ -77,5 +77,5 @@ def upload_file(url, file_path):
 
 if __name__ == "__main__":
     base_url = 'https://yk-fuku.onrender.com'  # Change to your Flask app's URL
-    file_path = 'result.html'  # Change to the path of the file to upload
+    file_path = 'result_stock_git_15.html'  # Change to the path of the file to upload
     print(upload_file(f'{base_url}/upsave_file', file_path))
