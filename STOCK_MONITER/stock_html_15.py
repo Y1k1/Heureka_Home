@@ -6,7 +6,6 @@ import html
 def read_json(json_file):
     with open(json_file, 'r') as file:
         data = json.load(file)
-    # Retrieve the first_half_15_image and later_half_15_image keys
     return data['first_half_15_image'], data['later_half_15_image']
 
 def compare_base_heights(directory, first_half, later_half):
@@ -37,20 +36,48 @@ def read_stock_titles(csv_file, stock_numbers):
     return titles
 
 def save_results_html(stock_numbers, titles, output_file, first_half, later_half):
+    grid_items = ""
+    for stock_number in stock_numbers:
+        title = titles.get(stock_number, "Unknown Title")
+        iframe_url = f"{first_half}{stock_number}{later_half}"
+        grid_items += f'<div class="grid-item"><div class="title">{html.escape(title)}</div><iframe src="{html.escape(iframe_url)}"></iframe></div>\n'
+
+    html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.grid-container {{
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-row-gap: 5px;
+  padding: 0;
+  margin: 0;
+}}
+.grid-item {{
+  padding: 5px;
+}}
+.title {{
+  text-align: center;
+  font-size: 1.2em;
+}}
+iframe {{
+  width: 100%;
+  height: 50vh;
+  border: none;
+}}
+</style>
+</head>
+<body>
+<div class="grid-container">
+{grid_items}
+</div>
+</body>
+</html>
+"""
+
     with open(output_file, 'w') as file:
-        file.write('<!DOCTYPE html><html><head><style>')
-        file.write('.grid-container {display: grid; grid-template-columns: auto auto; padding: 0; margin: 0;}')
-        file.write('.grid-item {padding: 10px;}')
-        file.write('.title {text-align: center; font-size: 1.2em;}')
-        file.write('iframe {width: 100%; height: 100vh; border: none;}')
-        file.write('</style></head><body><div class="grid-container">')
-
-        for stock_number in stock_numbers:
-            title = titles.get(stock_number, "Unknown Title")
-            iframe_url = f"{first_half}{stock_number}{later_half}"
-            file.write(f'<div class="grid-item"><div class="title">{html.escape(title)}</div><iframe src="{html.escape(iframe_url)}"></iframe></div>')
-
-        file.write('</div></body></html>')
+        file.write(html_content)
 
 # Define file paths
 directory = 'stock_chart_data_csv'
@@ -59,13 +86,28 @@ json_file = 'src_data_stock_url.json'
 html_output_file = 'result_stock_git_15.html'
 
 # Execute functions
-# Updated to use the new keys
 first_half, later_half = read_json(json_file)
 stock_numbers = compare_base_heights(directory, first_half, later_half)
 titles = read_stock_titles(csv_file, stock_numbers)
 save_results_html(stock_numbers, titles, html_output_file, first_half, later_half)
 
 print("Comparison complete. Check result_stock_git_15.html for output.")
+
+
+import requests
+
+def upload_file(url, file_path):
+    with open(file_path, 'rb') as f:
+        # Extract just the filename
+        filename = file_path.split('/')[-1]
+        files = {'file': (filename, f)}
+        response = requests.post(url, files=files)
+        return response.text
+
+if __name__ == "__main__":
+    base_url = 'https://yk-fuku.onrender.com'  # Change to your Flask app's URL
+    file_path = 'result_stock_git_15.html'  # Change to the path of the file to upload
+    print(upload_file(f'{base_url}/upsave_file', file_path))
 
 import requests
 
