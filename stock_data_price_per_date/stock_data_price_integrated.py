@@ -195,7 +195,7 @@ drive_service = build('drive', 'v3', credentials=credentials)
 
 # Specify the folder ID and files to upload
 folder_id = '1AMu-_CnZE07uwk57Hb-ZzL9wthrQUQX1'  # Replace with your folder ID
-csv_files = ['stock_data_price_per_date_integrated.csv', 'sstock_data_price_per_date_integrated_filtered.csv']
+csv_files = ['stock_data_price_per_date_integrated.csv', 'stock_data_price_per_date_integrated_filtered.csv']
 
 # Iterate over each file and upload/update it
 for csv_file in csv_files:
