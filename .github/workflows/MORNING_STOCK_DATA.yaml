@@ -27,7 +27,7 @@ jobs:
         pip install google-auth-httplib2
         pip install google-api-python-client
     - name: Run Python script
-      run: python stock_data_library/stock_data_library.py
+      run: python MORNING_STOCK_DATA/command_num.py
       shell: /usr/bin/bash -e {0}
       env:
         pythonLocation: /opt/hostedtoolcache/Python/3.10.13/x64
