@@ -2,14 +2,9 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-import json
 import re
 from collections import Counter
 import csv
-
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-os.chdir(script_dir)
 
 # Function to scrape and get news content
 def scrape_news():
@@ -44,17 +39,12 @@ def scrape_news():
 # Function to process the scraped data
 def process_data(data):
     number_counter = Counter()
-    sentences_data = {}
 
     for text in data.values():
-        matches = re.findall(r'[^。]*<\d+>[^。]*。', text)
-        for match in matches:
-            numbers = re.findall(r'<(\d+)>', match)
-            number_counter.update(numbers)
-            for number in numbers:
-                sentences_data.setdefault(number, []).append(match)
+        numbers = re.findall(r'\b\d{4}\b', text)
+        number_counter.update(numbers)
 
-    return number_counter, sentences_data
+    return number_counter
 
 # Function to save data to CSV
 # Function to save data to CSV
@@ -71,10 +61,10 @@ def save_to_csv(counter, csv_file_path):
 # Main function to integrate all steps
 def main():
     data = scrape_news()
-    number_counter, sentences_data = process_data(data)
+    number_counter = process_data(data)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_file_path = os.path.join(script_dir, 'stock_kabutan_collectible.csv')
-    save_to_csv(number_counter, sentences_data, csv_file_path)
+    save_to_csv(number_counter, csv_file_path)
     print(f"CSV file saved: {csv_file_path}")
 
 if __name__ == "__main__":
