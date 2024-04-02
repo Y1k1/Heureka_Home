@@ -57,13 +57,16 @@ def process_data(data):
     return number_counter, sentences_data
 
 # Function to save data to CSV
-def save_to_csv(counter, sentences_data, csv_file_path):
+# Function to save data to CSV
+def save_to_csv(counter, csv_file_path):
     with open(csv_file_path, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Stock Number', 'Frequency', 'Related Sentences'])
-        for number, count in counter.most_common(15):
-            sentences = " | ".join(sentences_data[number])
-            writer.writerow([number, count, sentences])
+        writer.writerow(['Stock Number'])
+        for number in counter.keys():
+            writer.writerow([number])
+
+# The rest of your code remains the same
+
 
 # Main function to integrate all steps
 def main():
