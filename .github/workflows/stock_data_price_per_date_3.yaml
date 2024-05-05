@@ -2,11 +2,11 @@ name: STOCK_DATA_PER_DATE_SUB_2
 
 on:
   schedule:
-    - cron: '40-59/5 7 * * 1-5'
-    - cron: '0-55/5 8 * * 1-5'
-    - cron: '0-55/5 9 * * 1-5'
-    - cron: '0-55/5 10 * * 1-5'
-    - cron: '0-10/5 11 * * 1-5'
+    - cron: '40-59/5 7 * * 1'
+    - cron: '0-55/5 8 * * 1'
+    - cron: '0-55/5 9 * * 1'
+    - cron: '0-55/5 10 * * 1'
+    - cron: '0-10/5 11 * * 1'
   workflow_dispatch:
 
 jobs:
