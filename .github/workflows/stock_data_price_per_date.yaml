@@ -2,7 +2,7 @@ name: STOCK_DATA_PER_DATE_INITHIAL
 
 on:
   schedule:
-    - cron: '20 7 * * 1-5'  # Runs at 8:30 AM UTC, Monday to Friday
+    - cron: '20 7 * * 1'  # Runs at 8:30 AM UTC, Monday to Friday
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
