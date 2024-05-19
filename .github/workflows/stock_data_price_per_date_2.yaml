@@ -1,4 +1,4 @@
-name: STOCK_DATA_PER_DATE_SUB_!
+name: STOCK_DATA_PER_DATE_SUB_1
 
 on:
   schedule:
