@@ -1,0 +1,46 @@
+name: STOCK_DATA_PER_DATE_SUB_3
+
+on:
+  schedule:
+    - cron: '44-59/5 7 * * 1-5'
+    - cron: '0-55/5 8 * * 1-5'
+    - cron: '0-55/5 9 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest  # Changed to use Ubuntu runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python script
+        run: python gd_continue.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
+
+      - name: Run Python script
+        run: python stock_data_price_per_date.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
+    
+      - name: Run Python script
+        run: python gu_continue.py
+        working-directory: ./stock_data_price_per_date
+        shell: bash
