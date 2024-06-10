@@ -2,7 +2,7 @@ name: SBI_URL
 
 on:
   schedule:
-    - cron: '0 21 * * 1-5'  # Runs at 8:30 AM, Saturday
+    - cron: '0 18 * * 1-5'  # Runs at 8:30 AM, Saturday
   workflow_dispatch:   # Allows manual triggering
 
 jobs:
