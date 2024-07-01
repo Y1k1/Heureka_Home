@@ -1,149 +1,37 @@
+import pandas as pd
 import requests
-from bs4 import BeautifulSoup
-import csv
+from io import BytesIO
 import os
 
 script_path = os.path.abspath(__file__)
 script_dir = os.path.dirname(script_path)
 os.chdir(script_dir)
 
-# Function to check if a string contains a percentage value
-def contains_percentage(text):
-    return "%" in text
+# Step 1: Download the Excel file
+url = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
+response = requests.get(url)
+response.raise_for_status()  # Ensure we notice bad responses
 
-# Function to get URLs, titles, and numbers from a single page
-def get_urls_titles_numbers(url):
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            # Find all hyperlink elements with either 'green' or 'red' class
-            hyperlink_elements = soup.find_all('a', class_=['green', 'red'])
+# Step 2: Read the Excel file from the response content
+xls = pd.ExcelFile(BytesIO(response.content))
 
-            # Initialize a list to store URL, title, and number pairs
-            url_title_number_list = []
+# Step 3: Extract necessary columns and create new DataFrame
+data = []
+for sheet_name in xls.sheet_names:
+    df = pd.read_excel(xls, sheet_name=sheet_name)
+    for index, row in df.iterrows():
+        name = row['銘柄名']
+        number = row['コード']
+        data.append([name, number, 'URL_placeholder'])
 
-            for element in hyperlink_elements:
-                # Extract URL from the 'href' attribute
-                href = element.get('href')
+# Step 4: Create new DataFrame
+stock_data_df = pd.DataFrame(data, columns=['Title', 'Number', 'URL'])
 
-                # Ensure that the URL suffix is appended with "https://walletinvestor.com/"
-                if not href.startswith("https://walletinvestor.com/"):
-                    href = "https://walletinvestor.com/" + href
+# Step 5: Save to stock_data.csv
+stock_data_df.to_csv('stock_data.csv', index=False, encoding='utf-8')
 
-                # Extract title and number from the text content
-                title_with_number = element.text.strip()
-                title = title_with_number.split('(')[0].strip()
-                number = title_with_number.split('(')[-1].replace(')', '').strip()
+print("New stock_data.csv created successfully.")
 
-                # Check if the title does not contain "Join Now!" or a percentage value
-                if title != "Join Now!" and not contains_percentage(title):
-                    # Append URL, title, and number to the list
-                    url_title_number_list.append((href, title, number))
-
-            return url_title_number_list
-        else:
-            print(f"Failed to fetch URL. Status code: {response.status_code}")
-            return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-
-# Function to scrape data from all pages and save to a CSV file
-def scrape_and_save_to_csv(base_url, num_pages, output_file):
-    all_data = []
-    for page in range(1, num_pages + 1):
-        url = f"{base_url}?page={page}&per-page=100"
-        page_data = get_urls_titles_numbers(url)
-        if page_data:
-            all_data.extend(page_data)
-    
-    # Save the data to a CSV file
-    with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
-        csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(['Title', 'Number', 'URL'])
-        for data in all_data:
-            csv_writer.writerow([data[1], data[2], data[0]])
-
-# Example usage:
-base_url = "https://walletinvestor.com/tse-stock-forecast"
-num_pages = 40  # Specify the number of pages to scrape
-output_file = "stock_data.csv"  # Specify the output CSV file name
-
-scrape_and_save_to_csv(base_url, num_pages, output_file)
-print(f"Data scraped and saved to {output_file}")
-
-import requests
-from bs4 import BeautifulSoup
-import csv
-import os
-
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-os.chdir(script_dir)
-
-# Function to read existing stock numbers from the CSV file
-def read_existing_numbers(filename):
-    existing_numbers = set()
-    try:
-        with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
-            csv_reader = csv.reader(csvfile)
-            for row in csv_reader:
-                if row:  # Check if row is not empty
-                    existing_numbers.add(row[1])  # Assuming number is in the second column
-    except FileNotFoundError:
-        pass  # If file doesn't exist, we just start with an empty set
-    return existing_numbers
-
-# Function to scrape data from a single page
-def get_stock_data(url, existing_numbers):
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            stock_elements = soup.find_all('td', class_='name')
-
-            stock_data_list = []
-            for element in stock_elements:
-                link = element.find('a')
-                if link:
-                    href = "https://www.marketwatch.com" + link.get('href')
-                    title = link.text.strip().split(' (')[0].strip()
-                    number = link.text.strip().split(' (')[-1].replace(')', '').strip()
-                    if number not in existing_numbers:
-                        stock_data_list.append((title, number, href))
-
-            return stock_data_list
-        else:
-            print(f"Failed to fetch URL. Status code: {response.status_code}")
-            return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-
-# Function to scrape data from all pages and save to a CSV file
-def scrape_and_save_to_csv(base_url, num_pages, output_file):
-    existing_numbers = read_existing_numbers(output_file)
-    all_data = []
-    for page in range(1, num_pages + 1):
-        url = f"{base_url}/{page}"
-        page_data = get_stock_data(url, existing_numbers)
-        if page_data:
-            all_data.extend(page_data)
-
-    # Save the new data to the CSV file
-    with open(output_file, 'a', newline='', encoding='utf-8') as csvfile:
-        csv_writer = csv.writer(csvfile)
-        for data in all_data:
-            csv_writer.writerow([data[0], data[1], data[2]])
-
-# Example usage:
-base_url = "https://www.marketwatch.com/tools/markets/stocks/country/japan"
-num_pages = 27
-output_file = "stock_data.csv"
-
-scrape_and_save_to_csv(base_url, num_pages, output_file)
-print(f"Data scraped and updated in {output_file}")
 #--newly----
 #----------
 import pandas as pd
